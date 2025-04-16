@@ -9,7 +9,7 @@ Route::prefix('tasks')->group(function () {
     Route::patch('/{task}', [TaskController::class, 'update']); 
     Route::delete('/{task}', [TaskController::class, 'destroy']); 
 
-
+    //status pending - done
     Route::patch('/{id}/toggle-status', [TaskController::class, 'toggleStatus']);
 });
 Route::get('/', [TaskController::class, 'index']);
