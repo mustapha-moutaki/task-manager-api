@@ -6,10 +6,7 @@ import {
   Box, 
   Paper, 
   Grid, 
-  TextField, 
-  Button, 
   Checkbox, 
-  FormControlLabel, 
   Card, 
   CardContent, 
   CardMedia, 
@@ -19,7 +16,8 @@ import {
   Alert, 
   ButtonGroup, 
   IconButton, 
-  Divider
+  Divider,
+  Button as MuiButton
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import EditIcon from '@mui/icons-material/Edit';
@@ -264,181 +262,175 @@ const TaskManager = () => {
           
           {/* Status filter buttons */}
           <ButtonGroup variant="contained" aria-label="task status filter">
-            <Button 
+            <MuiButton 
               onClick={() => setStatusFilter(null)}
               color={statusFilter === null ? "primary" : "inherit"}
               variant={statusFilter === null ? "contained" : "outlined"}
             >
               All
-            </Button>
-            <Button 
+            </MuiButton>
+            <MuiButton 
               onClick={() => setStatusFilter(false)}
               color={statusFilter === false ? "warning" : "inherit"}
               variant={statusFilter === false ? "contained" : "outlined"}
             >
               Pending
-            </Button>
-            <Button 
+            </MuiButton>
+            <MuiButton 
               onClick={() => setStatusFilter(true)}
               color={statusFilter === true ? "success" : "inherit"}
               variant={statusFilter === true ? "contained" : "outlined"}
             >
               Done
-            </Button>
+            </MuiButton>
           </ButtonGroup>
         </Box>
 
-        {/* Create/Edit Task Form */}
-        <Paper 
-          elevation={3} 
-          sx={{ mb: 4, overflow: 'hidden', borderRadius: 2 }}
-        >
-          <Box sx={{ 
-            px: 3, 
-            py: 2, 
-            background: 'linear-gradient(to right, #1976d2, #9c27b0)' 
-          }}>
-            <Typography variant="h6" color="white">
+        {/* Create/Edit Task Form with Tailwind CSS */}
+        <div className="w-full mb-8 bg-white rounded-lg shadow-lg overflow-hidden">
+          <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-4">
+            <h2 className="text-xl font-bold text-white">
               {isEditing ? 'Edit Task' : 'Create New Task'}
-            </Typography>
-          </Box>
+            </h2>
+          </div>
           
           {error && (
-            <Box sx={{ mx: 3, mt: 2 }}>
+            <div className="mx-6 mt-4">
               <Alert severity="error">{error}</Alert>
-            </Box>
+            </div>
           )}
 
-          <Box component="form" onSubmit={handleSubmit} sx={{ p: 3 }}>
-            <Grid container spacing={3}>
+          <form onSubmit={handleSubmit} className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Title Input */}
-              <Grid item xs={12} md={6}>
-                <TextField
-                  fullWidth
+              <div>
+                <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+                  Task Title
+                </label>
+                <input
+                  type="text"
                   id="title"
                   name="title"
-                  label="Task Title"
                   value={formData.title}
                   onChange={handleChange}
-                  error={!!validationErrors.title}
-                  helperText={validationErrors.title ? validationErrors.title[0] : ''}
-                  variant="outlined"
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition 
+                    ${validationErrors.title ? 'border-red-500' : 'border-gray-300'}`}
+                  placeholder="Enter task title"
                 />
-              </Grid>
+                {validationErrors.title && (
+                  <p className="mt-1 text-sm text-red-600">{validationErrors.title[0]}</p>
+                )}
+              </div>
 
               {/* Tags Input */}
-              <Grid item xs={12} md={6}>
-                <TextField
-                  fullWidth
+              <div>
+                <label htmlFor="tags" className="block text-sm font-medium text-gray-700 mb-2">
+                  Tags (comma separated)
+                </label>
+                <input
+                  type="text"
                   id="tags"
                   name="tags"
-                  label="Tags (comma separated)"
                   value={formData.tags}
                   onChange={handleChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                   placeholder="work, urgent, personal"
-                  variant="outlined"
-                  helperText="Example: work, urgent, personal"
                 />
-              </Grid>
+                <p className="mt-1 text-xs text-gray-500">Example: work, urgent, personal</p>
+              </div>
 
               {/* Description Textarea */}
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
+              <div className="md:col-span-2">
+                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+                  Task Description
+                </label>
+                <textarea
                   id="description"
                   name="description"
-                  label="Task Description"
+                  rows="4"
                   value={formData.description}
                   onChange={handleChange}
-                  error={!!validationErrors.description}
-                  helperText={validationErrors.description ? validationErrors.description[0] : ''}
-                  multiline
-                  rows={3}
-                  variant="outlined"
-                />
-              </Grid>
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition
+                    ${validationErrors.description ? 'border-red-500' : 'border-gray-300'}`}
+                  placeholder="Describe your task here..."
+                ></textarea>
+                {validationErrors.description && (
+                  <p className="mt-1 text-sm text-red-600">{validationErrors.description[0]}</p>
+                )}
+              </div>
 
-              {/* Status */}
-              <Grid item xs={12} md={6}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      id="status"
-                      name="status"
-                      checked={formData.status}
-                      onChange={handleChange}
-                      color="primary"
-                    />
-                  }
-                  label="Mark as done"
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="status"
+                  name="status"
+                  checked={formData.status}
+                  onChange={handleChange}
+                  className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded cursor-pointer"
                 />
-              </Grid>
+                <label htmlFor="status" className="ml-2 block text-sm text-gray-700 cursor-pointer">
+                  Mark as done
+                </label>
+              </div>
 
-              {/* Image Upload */}
-              <Grid item xs={12} md={6}>
-                <Button
-                  component="label"
-                  variant="contained"
-                  startIcon={<PhotoCameraIcon />}
-                  color="primary"
-                >
+              {/* Image Upload Button */}
+              <div className="flex items-center">
+                <label htmlFor="image-upload" className="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer">
+                  <PhotoCameraIcon className="mr-2 h-5 w-5" />
                   Upload Image
-                  <VisuallyHiddenInput 
-                    type="file" 
+                  <input
+                    id="image-upload"
                     name="image"
+                    type="file"
                     accept="image/*"
                     onChange={handleChange}
+                    className="sr-only"
                   />
-                </Button>
+                </label>
                 {validationErrors.image && (
-                  <Typography variant="caption" color="error" sx={{ ml: 2 }}>
-                    {validationErrors.image[0]}
-                  </Typography>
+                  <p className="ml-3 text-sm text-red-600">{validationErrors.image[0]}</p>
                 )}
-              </Grid>
+              </div>
 
               {/* Image Preview */}
               {imagePreview && (
-                <Grid item xs={12}>
-                  <Box sx={{ display: 'inline-block', p: 1, bgcolor: 'grey.100', borderRadius: 1 }}>
-                    <Box
-                      component="img"
-                      src={imagePreview}
-                      alt="Preview"
-                      sx={{ height: 120, borderRadius: 1 }}
+                <div className="md:col-span-2">
+                  <div className="inline-block p-2 bg-gray-100 rounded-lg">
+                    <img 
+                      src={imagePreview} 
+                      alt="Preview" 
+                      className="h-32 rounded-lg"
                     />
                     {isEditing && !(formData.image instanceof File) && (
-                      <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+                      <p className="mt-1 text-xs text-gray-500">
                         Current image will be kept unless you select a new one
-                      </Typography>
+                      </p>
                     )}
-                  </Box>
-                </Grid>
+                  </div>
+                </div>
               )}
-            </Grid>
+            </div>
 
             {/* Form Actions */}
-            <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
-              <Button
+            <div className="flex justify-end space-x-4 mt-6">
+              <button
                 type="button"
                 onClick={resetForm}
-                variant="outlined"
-                color="inherit"
+                className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200 shadow-sm"
               >
                 Cancel
-              </Button>
-              <Button
+              </button>
+              <button
                 type="submit"
-                variant="contained"
-                color="primary"
+                className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 shadow-sm"
               >
                 {isEditing ? 'Update Task' : 'Create Task'}
-              </Button>
-            </Box>
-          </Box>
-        </Paper>
+              </button>
+            </div>
+          </form>
+        </div>
 
-        {/* Tasks List */}
+        {/* Tasks List - Using Material UI for cards with wider layout */}
         {tasks.length === 0 ? (
           <Paper sx={{ p: 3, textAlign: 'center' }}>
             <Typography color="text.secondary">No tasks found.</Typography>
@@ -446,12 +438,11 @@ const TaskManager = () => {
         ) : (
           <Grid container spacing={3}>
             {tasks.map((task) => (
-              <Grid item xs={12} sm={6} lg={4} key={task.id}>
+              <Grid item xs={12} key={task.id}>
                 <Card 
                   sx={{ 
-                    height: '100%', 
-                    display: 'flex', 
-                    flexDirection: 'column',
+                    height: 220, // Standard height for all cards
+                    display: 'flex', // Horizontal layout
                     border: 1,
                     borderColor: task.status ? 'success.light' : 'warning.light',
                     transition: 'all 0.3s',
@@ -460,114 +451,116 @@ const TaskManager = () => {
                     }
                   }}
                 >
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
-                      <Checkbox
-                        checked={task.status}
-                        onChange={() => handleToggleStatus(task.id)}
-                        size="small"
+                  {/* Left side - Image section */}
+                  <Box sx={{ width: 220, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'grey.100' }}>
+                    {task.image_path ? (
+                      <CardMedia
+                        component="img"
+                        image={`http://localhost:8000/${task.image_path}`}
+                        alt="Task"
+                        sx={{ height: '100%', width: '100%', objectFit: 'cover' }}
                       />
-                      <Typography 
-                        variant="h6" 
-                        component="h3"
-                        sx={{
-                          ml: 1,
-                          ...(task.status && {
-                            textDecoration: 'line-through',
-                            color: 'text.secondary'
-                          })
-                        }}
-                      >
-                        {task.title}
-                      </Typography>
-                    </Box>
-                    
-                    <Typography 
-                      variant="body2" 
-                      color="text.secondary" 
-                      sx={{ 
-                        mt: 1,
-                        display: '-webkit-box',
-                        WebkitLineClamp: 3,
-                        WebkitBoxOrient: 'vertical',
-                        overflow: 'hidden'
-                      }}
-                    >
-                      {task.description}
-                    </Typography>
-                    
-                    {/* Tags Display */}
-                    {task.tags && (
-                      <Box sx={{ mt: 2, display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                        {task.tags.split(',').map((tag, idx) => 
-                          tag.trim() && (
-                            <Chip 
-                              key={idx} 
-                              label={tag.trim()}
-                              size="small"
-                              color={getTagColor(tag.trim())}
-                            />
-                          )
-                        )}
+                    ) : (
+                      <Box sx={{ 
+                        height: '100%', 
+                        width: '100%', 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center', 
+                        bgcolor: 'grey.100',
+                      }}>
+                        <ImageIcon sx={{ fontSize: 64, color: 'text.disabled' }} />
                       </Box>
                     )}
-                    
-                    <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center', height: 120 }}>
-                      {task.image_path ? (
-                        <CardMedia
-                          component="img"
-                          image={`http://localhost:8000/${task.image_path}`}
-                          alt="Task"
-                          sx={{ height: 120, width: 'auto', borderRadius: 1 }}
+                  </Box>
+                  
+                  {/* Right side - Content section */}
+                  <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                    <CardContent sx={{ flexGrow: 1, pb: 1 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                        <Checkbox
+                          checked={task.status}
+                          onChange={() => handleToggleStatus(task.id)}
+                          size="small"
                         />
-                      ) : (
-                        <Box sx={{ 
-                          height: 120, 
-                          width: '100%', 
-                          display: 'flex', 
-                          alignItems: 'center', 
-                          justifyContent: 'center', 
-                          bgcolor: 'grey.100',
-                          borderRadius: 1
-                        }}>
-                          <ImageIcon sx={{ fontSize: 64, color: 'text.disabled' }} />
+                        <Typography 
+                          variant="h6" 
+                          component="h3"
+                          sx={{
+                            ...(task.status && {
+                              textDecoration: 'line-through',
+                              color: 'text.secondary'
+                            })
+                          }}
+                        >
+                          {task.title}
+                        </Typography>
+                      </Box>
+                      
+                      <Typography 
+                        variant="body2" 
+                        color="text.secondary" 
+                        sx={{ 
+                          mb: 2,
+                          overflow: 'hidden',
+                          display: '-webkit-box',
+                          WebkitLineClamp: 3,
+                          WebkitBoxOrient: 'vertical',
+                        }}
+                      >
+                        {task.description}
+                      </Typography>
+                      
+                      {/* Tags Display */}
+                      {task.tags && (
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1 }}>
+                          {task.tags.split(',').map((tag, idx) => 
+                            tag.trim() && (
+                              <Chip 
+                                key={idx} 
+                                label={tag.trim()}
+                                size="small"
+                                color={getTagColor(tag.trim())}
+                              />
+                            )
+                          )}
                         </Box>
                       )}
-                    </Box>
-                  </CardContent>
-                  
-                  <Divider />
-                  
-                  <CardActions sx={{ bgcolor: 'grey.50', justifyContent: 'space-between', px: 2 }}>
-                    <Button
-                      size="small"
-                      startIcon={<EditIcon />}
-                      onClick={() => handleEdit(task)}
-                      variant="outlined"
-                      color="primary"
-                    >
-                      Edit
-                    </Button>
+                    </CardContent>
                     
-                    <Button
-                      size="small"
-                      startIcon={task.status ? <UndoIcon /> : <CheckCircleIcon />}
-                      onClick={() => handleToggleStatus(task.id)}
-                      variant="contained"
-                      color={task.status ? "warning" : "success"}
-                    >
-                      {task.status ? 'Undo' : 'Done'}
-                    </Button>
+                    <Divider />
                     
-                    <IconButton
-                      size="small"
-                      onClick={() => handleDelete(task.id)}
-                      color="error"
-                      aria-label="delete"
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </CardActions>
+                    <CardActions sx={{ bgcolor: 'grey.50', justifyContent: 'space-between', px: 2 }}>
+                      <MuiButton
+                        size="small"
+                        startIcon={<EditIcon />}
+                        onClick={() => handleEdit(task)}
+                        variant="outlined"
+                        color="primary"
+                      >
+                        Edit
+                      </MuiButton>
+                      
+                      <MuiButton
+                        size="small"
+                        startIcon={task.status ? <UndoIcon /> : <CheckCircleIcon />}
+                        onClick={() => handleToggleStatus(task.id)}
+                        variant="contained"
+                        color={task.status ? "warning" : "success"}
+                      >
+                        {task.status ? 'Undo' : 'Done'}
+                      </MuiButton>
+                      
+                      <IconButton
+                        size="small"
+                        onClick={() => handleDelete(task.id)}
+                        color="error"
+                        aria-label="delete"
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </CardActions>
+                  </Box>
                 </Card>
               </Grid>
             ))}
