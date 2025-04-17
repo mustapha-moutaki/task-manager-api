@@ -432,140 +432,141 @@ const TaskManager = () => {
 
         {/* Tasks List - Using Material UI for cards with wider layout */}
         {tasks.length === 0 ? (
-          <Paper sx={{ p: 3, textAlign: 'center' }}>
-            <Typography color="text.secondary">No tasks found.</Typography>
-          </Paper>
-        ) : (
-          <Grid container spacing={3}>
-            {tasks.map((task) => (
-              <Grid item xs={12} key={task.id}>
-                <Card 
-                  sx={{ 
-                    height: 220, // Standard height for all cards
-                    display: 'flex', // Horizontal layout
-                    border: 1,
-                    borderColor: task.status ? 'success.light' : 'warning.light',
-                    transition: 'all 0.3s',
-                    '&:hover': {
-                      boxShadow: 6
-                    }
+  <Paper sx={{ p: 3, textAlign: 'center' }}>
+    <Typography color="text.secondary">No tasks found.</Typography>
+  </Paper>
+) : (
+  <Grid container spacing={3} justifyContent="center">
+    {tasks.map((task) => (
+      <Grid item xs={12} md={8} lg={6} key={task.id}>
+        <Card 
+          sx={{ 
+            height: 220, // Standard height for all cards
+            display: 'flex', // Horizontal layout
+            border: 1,
+            borderColor: task.status ? 'success.light' : 'warning.light',
+            transition: 'all 0.3s',
+            '&:hover': {
+              boxShadow: 6
+            }
+          }}
+        >
+          {/* Left side - Image section */}
+          <Box sx={{ width: 220, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'grey.100' }}>
+            {task.image_path ? (
+              <CardMedia
+                component="img"
+                image={`http://localhost:8000/${task.image_path}`}
+                alt="Task"
+                sx={{ height: '100%', width: '100%', objectFit: 'cover' }}
+              />
+            ) : (
+              <Box sx={{ 
+                height: '100%', 
+                width: '100%', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                bgcolor: 'grey.100',
+              }}>
+                <ImageIcon sx={{ fontSize: 64, color: 'text.disabled' }} />
+              </Box>
+            )}
+          </Box>
+          
+          {/* Right side - Content section */}
+          <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+            <CardContent sx={{ flexGrow: 1, pb: 1 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                <Checkbox
+                  checked={task.status}
+                  onChange={() => handleToggleStatus(task.id)}
+                  size="small"
+                />
+                <Typography 
+                  variant="h6" 
+                  component="h3"
+                  sx={{
+                    ...(task.status && {
+                      textDecoration: 'line-through',
+                      color: 'text.secondary'
+                    })
                   }}
                 >
-                  {/* Left side - Image section */}
-                  <Box sx={{ width: 220, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'grey.100' }}>
-                    {task.image_path ? (
-                      <CardMedia
-                        component="img"
-                        image={`http://localhost:8000/${task.image_path}`}
-                        alt="Task"
-                        sx={{ height: '100%', width: '100%', objectFit: 'cover' }}
+                  {task.title}
+                </Typography>
+              </Box>
+              
+              <Typography 
+                variant="body2" 
+                color="text.secondary" 
+                sx={{ 
+                  mb: 2,
+                  overflow: 'hidden',
+                  display: '-webkit-box',
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: 'vertical',
+                }}
+              >
+                {task.description}
+              </Typography>
+              
+              {/* Tags Display */}
+              {task.tags && (
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1 }}>
+                  {task.tags.split(',').map((tag, idx) => 
+                    tag.trim() && (
+                      <Chip 
+                        key={idx} 
+                        label={tag.trim()}
+                        size="small"
+                        color={getTagColor(tag.trim())}
                       />
-                    ) : (
-                      <Box sx={{ 
-                        height: '100%', 
-                        width: '100%', 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center', 
-                        bgcolor: 'grey.100',
-                      }}>
-                        <ImageIcon sx={{ fontSize: 64, color: 'text.disabled' }} />
-                      </Box>
-                    )}
-                  </Box>
-                  
-                  {/* Right side - Content section */}
-                  <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-                    <CardContent sx={{ flexGrow: 1, pb: 1 }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                        <Checkbox
-                          checked={task.status}
-                          onChange={() => handleToggleStatus(task.id)}
-                          size="small"
-                        />
-                        <Typography 
-                          variant="h6" 
-                          component="h3"
-                          sx={{
-                            ...(task.status && {
-                              textDecoration: 'line-through',
-                              color: 'text.secondary'
-                            })
-                          }}
-                        >
-                          {task.title}
-                        </Typography>
-                      </Box>
-                      
-                      <Typography 
-                        variant="body2" 
-                        color="text.secondary" 
-                        sx={{ 
-                          mb: 2,
-                          overflow: 'hidden',
-                          display: '-webkit-box',
-                          WebkitLineClamp: 3,
-                          WebkitBoxOrient: 'vertical',
-                        }}
-                      >
-                        {task.description}
-                      </Typography>
-                      
-                      {/* Tags Display */}
-                      {task.tags && (
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1 }}>
-                          {task.tags.split(',').map((tag, idx) => 
-                            tag.trim() && (
-                              <Chip 
-                                key={idx} 
-                                label={tag.trim()}
-                                size="small"
-                                color={getTagColor(tag.trim())}
-                              />
-                            )
-                          )}
-                        </Box>
-                      )}
-                    </CardContent>
-                    
-                    <Divider />
-                    
-                    <CardActions sx={{ bgcolor: 'grey.50', justifyContent: 'space-between', px: 2 }}>
-                      <MuiButton
-                        size="small"
-                        startIcon={<EditIcon />}
-                        onClick={() => handleEdit(task)}
-                        variant="outlined"
-                        color="primary"
-                      >
-                        Edit
-                      </MuiButton>
-                      
-                      <MuiButton
-                        size="small"
-                        startIcon={task.status ? <UndoIcon /> : <CheckCircleIcon />}
-                        onClick={() => handleToggleStatus(task.id)}
-                        variant="contained"
-                        color={task.status ? "warning" : "success"}
-                      >
-                        {task.status ? 'Undo' : 'Done'}
-                      </MuiButton>
-                      
-                      <IconButton
-                        size="small"
-                        onClick={() => handleDelete(task.id)}
-                        color="error"
-                        aria-label="delete"
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </CardActions>
-                  </Box>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        )}
+                    )
+                  )}
+                </Box>
+              )}
+            </CardContent>
+            
+            <Divider />
+            
+            <CardActions sx={{ bgcolor: 'grey.50', justifyContent: 'space-between', px: 2 }}>
+              <MuiButton
+                size="small"
+                startIcon={<EditIcon />}
+                onClick={() => handleEdit(task)}
+                variant="outlined"
+                color="primary"
+              >
+                Edit
+              </MuiButton>
+              
+              <MuiButton
+                size="small"
+                startIcon={task.status ? <UndoIcon /> : <CheckCircleIcon />}
+                onClick={() => handleToggleStatus(task.id)}
+                variant="contained"
+                color={task.status ? "warning" : "success"}
+              >
+                {task.status ? 'Undo' : 'Done'}
+              </MuiButton>
+              
+              <IconButton
+                size="small"
+                onClick={() => handleDelete(task.id)}
+                color="error"
+                aria-label="delete"
+              >
+                <DeleteIcon />
+              </IconButton>
+            </CardActions>
+          </Box>
+        </Card>
+      </Grid>
+    ))}
+  </Grid>
+)}
+        
       </Container>
     </Box>
   );
