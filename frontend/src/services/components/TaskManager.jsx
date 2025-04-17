@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import API from '../api';
+// import material ui composents
 import { 
   Container, 
   Typography, 
@@ -27,7 +28,7 @@ import UndoIcon from '@mui/icons-material/Undo';
 import ImageIcon from '@mui/icons-material/Image';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 
-// Styled components
+
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
   clipPath: 'inset(50%)',
@@ -153,6 +154,8 @@ const TaskManager = () => {
           status: formData.status,
           tags: formattedTags
         };
+
+
         
         if (formData.image) {
           await API.uploadTaskWithImage({ ...taskData, image: formData.image });
@@ -336,7 +339,7 @@ const TaskManager = () => {
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                   placeholder="work, urgent, personal"
                 />
-                <p className="mt-1 text-xs text-gray-500">Example: work, urgent, personal</p>
+                <p className="mt-1 text-xs text-gray-500">Example: work, fun, personal</p>
               </div>
 
               {/* Description Textarea */}
@@ -441,8 +444,8 @@ const TaskManager = () => {
       <Grid item xs={12} md={8} lg={6} key={task.id}>
         <Card 
           sx={{ 
-            height: 220, // Standard height for all cards
-            display: 'flex', // Horizontal layout
+            height: 220, 
+            display: 'flex',
             border: 1,
             borderColor: task.status ? 'success.light' : 'warning.light',
             transition: 'all 0.3s',

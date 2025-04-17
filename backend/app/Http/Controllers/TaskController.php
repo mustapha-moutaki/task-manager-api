@@ -40,7 +40,7 @@ class TaskController extends Controller
         $task->title = $request->title;
         $task->description = $request->description;
         $task->status = $request->status ?? false;
-        $task->tags = $request->tags; // Save tags
+        $task->tags = $request->tags;
         
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -64,7 +64,7 @@ class TaskController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'status' => 'nullable|boolean',
-            'tags' => 'nullable|string|max:255', // Add validation for tags
+            'tags' => 'nullable|string|max:255',
         ]);
         
         if ($validator->fails()) {
@@ -93,7 +93,7 @@ class TaskController extends Controller
             'description' => 'nullable|string',
             'status' => 'nullable|boolean',
             'image' => 'required|image|max:2048',
-            'tags' => 'nullable|string|max:255', // Add validation for tags
+            'tags' => 'nullable|string|max:255',
         ]);
         
         if ($validator->fails()) {
@@ -104,7 +104,7 @@ class TaskController extends Controller
         $task->title = $request->title;
         $task->description = $request->description;
         $task->status = $request->status ?? false;
-        $task->tags = $request->tags; // Update tags
+        $task->tags = $request->tags;
         
         // Delete old image if it exists
         if ($task->image_path) {
@@ -139,7 +139,7 @@ class TaskController extends Controller
             Storage::delete($imagePath);
         }
         
-        // Delete the task
+        
         $task->delete();
      
         return response()->json(['message' => 'Task deleted successfully'], 200);

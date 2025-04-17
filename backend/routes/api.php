@@ -12,4 +12,4 @@ Route::prefix('tasks')->group(function () {
     //status pending - done
     Route::patch('/{id}/toggle-status', [TaskController::class, 'toggleStatus']);
 });
-Route::get('/', [TaskController::class, 'index']);
+
