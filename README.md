@@ -3,7 +3,7 @@
 A full-stack task management application with React frontend and Laravel API backend.
 
 ## Overview
-https://github.com/user-attachments/assets/51dd24f5-acd0-4cdc-bd97-0b76d2dce779
+
 This Task Manager allows users to:
 - Create tasks with title, image, and optional description
 - View all tasks in a clean, intuitive interface
@@ -13,6 +13,8 @@ This Task Manager allows users to:
 - Filter tasks by status (done/pending)
 - Sort tasks by creation date (newest/oldest)
 
+
+[Watch a demo video here!]([https://www.youtube.com/watch?v=YOUR_YOUTUBE_VIDEO_ID](https://github.com/user-attachments/assets/51dd24f5-acd0-4cdc-bd97-0b76d2dce779 ))
 ## Tech Stack
 
 ### Frontend
