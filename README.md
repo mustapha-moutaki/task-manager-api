@@ -14,7 +14,7 @@ This Task Manager allows users to:
 - Sort tasks by creation date (newest/oldest)
 
 
-[Watch a demo video here!]([https://github.com/user-attachments/assets/51dd24f5-acd0-4cdc-bd97-0b76d2dce779 ))
+[![Video Thumbnail](https://path-to-thumbnail-image.jpg)](https://github.com/user-attachments/assets/51dd24f5-acd0-4cdc-bd97-0b76d2dce779)
 ## Tech Stack
 
 ### Frontend
